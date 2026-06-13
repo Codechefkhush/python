@@ -1,156 +1,111 @@
-# Python Learning Repository
+# Python Learning — Concepts Reference
 
-A personal repo for learning Python — starting with **FastAPI**, a modern web framework for building APIs.
+A reference document covering the core Python and FastAPI concepts explored in this tutorial repository.
 
 ---
 
-## Module 1: FastAPI
+## Python Concepts
+
+### Type Hints
+
+Python is dynamically typed, but since Python 3.5 you can annotate variables and function parameters with types. These are not enforced by Python itself at runtime, but tools like FastAPI and Pydantic use them to validate data automatically.
+
+```python
+def greet(name: str) -> str:
+    return "Hello " + name
+```
+
+### Modules and Packages
+
+A **module** is any `.py` file. A **package** is a folder containing an `__init__.py` file, which tells Python to treat that folder as an importable module. You import from them using dot notation — `from api.math import router`.
+
+### Functions as First-Class Objects
+
+In Python, functions are objects. You can pass them around, store them in variables, and use them as arguments. Decorators (like `@app.get("/")`) rely on this — they are functions that wrap other functions to add behaviour.
+
+---
+
+## FastAPI Concepts
 
 ### What is FastAPI?
 
-FastAPI is a Python web framework for building HTTP APIs quickly and with minimal code. It is:
+FastAPI is a modern Python web framework for building HTTP APIs. It is built on top of **Starlette** (for the web layer) and **Pydantic** (for data validation), and it uses Python type hints to do most of the heavy lifting automatically.
 
-- **Fast** — one of the fastest Python frameworks, on par with Node.js and Go
-- **Type-safe** — uses Python type hints to validate request/response data automatically
-- **Auto-documented** — generates interactive API docs at `/docs` (Swagger UI) and `/redoc` with zero extra work
+### ASGI
 
-### Project Structure
+ASGI (Asynchronous Server Gateway Interface) is the standard interface between async Python web frameworks and web servers. FastAPI is an ASGI framework, which is why it needs an ASGI server like Uvicorn to run.
 
-```
-python/
-├── api/
-│   ├── __init__.py     # Makes `api` a Python package
-│   └── app.py          # FastAPI app and route definitions
-├── run.py              # Entry point — starts the server
-├── requirements.txt    # Project dependencies
-└── README.md
-```
+### Uvicorn
 
----
+Uvicorn is the web server that runs your FastAPI application. It listens on a port, receives HTTP requests, and passes them to your app. It supports `reload=True` for development, which restarts the server automatically whenever you save a file.
 
-### Key Concepts
+### The App Instance
 
-#### 1. The `FastAPI` App Instance
+`FastAPI()` creates the main application object. Everything — routes, routers, middleware — is registered on this object. It is the entry point that Uvicorn receives requests from.
 
-```python
-from fastapi import FastAPI
+### Routes and HTTP Methods
 
-app = FastAPI()
-```
+A route maps a URL path and an HTTP method to a Python function. FastAPI supports all standard HTTP methods:
 
-`app` is the core object. All routes are registered on it, and it is the object that the server runs.
+- **GET** — retrieve data; no request body
+- **POST** — send data to create or process something; supports a request body
+- **PUT** — update an existing resource
+- **DELETE** — remove a resource
 
----
+Using the wrong method (e.g. GET when you need to send a body) is a common mistake — GET requests do not carry a body, so Pydantic models must be used with POST or PUT.
 
-#### 2. Route Decorators
+### Path Parameters
+
+A variable segment in the URL, defined with curly braces. FastAPI extracts it and passes it as a function argument.
 
 ```python
-@app.get("/")
-def read_root():
-    return {"message": "Hello! This is FastAPI"}
+@app.get("/user/{name}")
+def get_user(name: str): ...
 ```
 
-A **route** maps a URL path and HTTP method to a Python function. The decorator `@app.get("/")` means: _when someone sends a GET request to `/`, call `read_root()`_.
+### Query Parameters
 
-Common HTTP method decorators:
-
-| Decorator        | HTTP Method | Typical Use          |
-|------------------|-------------|----------------------|
-| `@app.get()`     | GET         | Read / fetch data    |
-| `@app.post()`    | POST        | Create new data      |
-| `@app.put()`     | PUT         | Update existing data |
-| `@app.delete()`  | DELETE      | Delete data          |
-
-FastAPI automatically converts whatever you return from Python dicts/lists into a JSON response.
-
----
-
-#### 3. Uvicorn — The Server
+Parameters passed in the URL after a `?`. Any function parameter that is not a path parameter is automatically treated as a query parameter.
 
 ```python
-uvicorn.run("api.app:app", host="0.0.0.0", port=8000, reload=True)
+@app.get("/calculate")
+def calculate(a: float, b: float): ...
+# called as /calculate?a=10&b=5
 ```
 
-**Uvicorn** is an ASGI server — it is the program that actually listens on a network port, receives HTTP requests, and hands them to your FastAPI app.
+### Request Body and Pydantic
 
-Think of it like this:
+When you need to send structured data to an endpoint (like a form or JSON payload), you define a Pydantic `BaseModel`. FastAPI reads the request body, validates it against the model, and gives you a Python object.
 
-```
-Browser / Client
-      |
-      | HTTP request
-      ↓
-  Uvicorn (the server)
-      |
-      | calls
-      ↓
-  FastAPI app (your code)
-      |
-      | returns a response
-      ↓
-  Uvicorn sends it back
-      ↓
-Browser / Client
+```python
+from pydantic import BaseModel
+
+class Item(BaseModel):
+    name: str
+    price: float
 ```
 
-Key arguments in `uvicorn.run()`:
+Pydantic also raises clear validation errors automatically if the data doesn't match the schema.
 
-| Argument | What it does |
-|----------|--------------|
-| `"api.app:app"` | Points to the `app` object inside `api/app.py` — format is `"module.path:variable"` |
-| `host="0.0.0.0"` | Listen on all network interfaces (use `"127.0.0.1"` to restrict to localhost only) |
-| `port=8000` | The port number (must be an **integer**, not a string) |
-| `reload=True` | Auto-restarts the server when you save a file — great for development |
+### APIRouter
 
-> **ASGI** (Asynchronous Server Gateway Interface) is the standard that lets async Python web frameworks like FastAPI talk to servers like Uvicorn.
+`APIRouter` lets you split your routes across multiple files and then register them all on the main app with `app.include_router()`. Each router can have a `prefix` (e.g. `/mathematics`) and `tags` to group routes in Swagger UI.
+
+### Auto-generated Documentation
+
+FastAPI automatically generates two interactive API documentation pages with zero configuration:
+
+- **Swagger UI** — available at `/docs`
+- **ReDoc** — available at `/redoc`
+
+These are built from the route definitions, type hints, and `summary` strings you write. Tags (from `APIRouter`) are used to group routes into sections in the Swagger UI.
 
 ---
 
-#### 4. `__init__.py`
+## Modules Covered
 
-The empty file `api/__init__.py` tells Python that the `api` folder is a **package** — meaning you can import from it using `from api.app import app`. Without this file, the import would fail.
-
----
-
-### Running the App
-
-**Step 1 — Install dependencies:**
-
-```bash
-pip install -r requirements.txt
-```
-
-**Step 2 — Start the server:**
-
-```bash
-python run.py
-```
-
-**Step 3 — Open in browser:**
-
-- API: [http://localhost:8000](http://localhost:8000)
-- Interactive docs: [http://localhost:8000/docs](http://localhost:8000/docs)
-- Alternative docs: [http://localhost:8000/redoc](http://localhost:8000/redoc)
-
----
-
-### Bug Fixes Made (Learning Notes)
-
-| File | Bug | Fix |
-|------|-----|-----|
-| `run.py` | `port="8000"` — port was a string | Changed to `port=8000` (integer) |
-| `run.py` | Folder named `fastapi/` shadowed the installed `fastapi` library | Renamed folder to `api/` |
-| `run.py` | Import `from fastapi.app import app` failed | Changed to `from api.app import app` |
-| `requirements.txt` | Was empty | Added `fastapi` and `uvicorn[standard]` |
-
-> **Why does folder name matter?** Python searches for modules by name. If your folder is called `fastapi`, Python finds it first when you write `from fastapi import FastAPI` — and since your folder doesn't define `FastAPI`, the import fails. Always avoid naming your folders/files the same as installed packages.
-
----
-
-### What's Next
-
-- Path parameters: `/items/{item_id}`
-- Query parameters: `/items?skip=0&limit=10`
-- Request body with Pydantic models
-- Async route handlers with `async def`
-- Dependency injection
+| Module | Concepts Practised |
+|--------|-------------------|
+| FastAPI Basics | App instance, GET routes, path parameters |
+| Mathematics Router | APIRouter, prefix, tags, query parameters |
+| Validator Router | POST routes, Pydantic models, importing from external modules |
