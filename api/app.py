@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from api.mathematics import router as math_router
 from api.validator import router as validator_router
+from api.to_do_list import router as todos_router
 
 app = FastAPI()
 
 app.include_router(math_router)
 app.include_router(validator_router)
+app.include_router(todos_router)
 
 @app.get("/")
 def read_root():
