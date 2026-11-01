@@ -134,3 +134,80 @@ lb = [4, 5, 6]
 
 concatenated_list = la + lb  # concatenates lists la and lb
 print("Concatenated list:", concatenated_list)  # Output: Concatenated list: [1, 2, 3, 4, 5, 6]
+
+
+
+# list functions
+
+# reverse(), min(), max(), count(), index(), sort(), sorted()
+
+# the difference between sort() and sorted() is that sort() method modifies the list in place, while sorted() function returns a new sorted list without modifying the original list.
+
+l = [10, 20, 30, 40, 50]
+
+# l.reverse()  # reverses the list in place
+# print("List after reversing:", l)  # Output: List after reversing: [50,
+
+# min_value = min(l)  # finds the minimum value in the list
+# print("Minimum value in the list:", min_value)  # Output: Minimum value in the
+
+# max_value = max(l)  # finds the maximum value in the list
+# print("Maximum value in the list:", max_value)  # Output: Maximum value in the
+
+# count_of_30 =l.count(30)  # counts the occurrences of 30 in the list
+# print("Count of 30 in the list:", count_of_30)  # Output:
+
+# index_no = l.index(30)  # finds the index of the first occurrence of 30 in the list
+# print("Index of 30 in the list:", index_no)  # Output: Index of 30 in the list:
+
+# l.sort()  # sorts the list in ascending order
+# print("List after sorting:", l)  # Output: List after sorting: [10, 20, 30, 40, 50]
+
+
+
+# how to iterate two lists simulataneously using zip() function. 
+# The zip() function takes two or more iterables (like lists, tuples, or strings) and returns an iterator that generates tuples containing elements from the input 
+# iterables. The iteration stops when the shortest input iterable is exhausted.
+
+
+l1 = [1, 2, 3, 4, 5, 6]
+l2 = [11,12, 13, 14, 15]
+
+len_l1= len(l1)
+len_l2= len(l2)
+
+len = min(len_l1, len_l2)
+
+for num in range(len):
+    num1 = l1[num]
+    num2 = l2[num]
+    is_even1 = num1%2==0
+    if is_even1:
+        print(num1)
+    is_even2 = num2%2==0
+    if is_even2:
+        print(num2)
+    
+for num1, num2 in zip(l1, l2): # any extra elements in the longer list will be ignored, and the iteration will stop when the shorter list is exhausted.
+    if num1%2==0:
+        print(num1)
+    if num2%2==0:
+        print(num2)
+        
+        
+        
+# how to convert muliple strings in list
+
+# split() method splits a string into a list of substrings based on a specified delimiter. By default, it splits the string at whitespace characters (spaces, tabs, and newlines). The method returns a list of the resulting substrings.
+
+
+string1 = "Python is a high-level programming language."
+
+print(string1.split(maxsplit=3))  # Output: ['Python', 'is', 'a', 'high-level', 'programming', 'language.']
+
+
+list_of_strings = []
+for i in range(1, 4):
+    input_str = input("Enter your " + str(i) + "st input:- ")
+    list_of_strings.append(input_str)
+print("List of strings:", list_of_strings)  

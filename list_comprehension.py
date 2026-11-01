@@ -25,3 +25,6 @@ name = "Khushal"
 name_list = [ch for ch in name]
 
 print(name_list) # print each character of the string in list
+
+
+
