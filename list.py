@@ -29,14 +29,185 @@ l = [10, 20, 30, 40, 50]
 
 length = len(l)
 
-for i in range(length): # range in python is a built-in function that generates a sequence of numbers. It can take one, two, or three arguments: start, stop, and step. The range function returns an iterable object that produces numbers from the start value (inclusive) to the stop value (exclusive), incrementing by the step value. If only one argument is provided, it is treated as the stop value, and the start defaults to 0. If two arguments are provided, they are treated as the start and stop values, respectively. If three arguments are provided, they are treated as the start, stop, and step values.
-    print(i)
+# for i in range(length): # range in python is a built-in function that generates a sequence of numbers. It can take one, two, or three arguments: start, stop, and step. The range function returns an iterable object that produces numbers from the start value (inclusive) to the stop value (exclusive), incrementing by the step value. If only one argument is provided, it is treated as the stop value, and the start defaults to 0. If two arguments are provided, they are treated as the start and stop values, respectively. If three arguments are provided, they are treated as the start, stop, and step values.
+#     print(i)
     
-for n in range(length):
-    print(l[n])
+# for n in range(length):
+#     print(l[n])
 
-for n in l:
-    print(n)
+# for n in l:
+#     print(n)
     
-for n in range(length-1, -1, -1): # range(start, stop, step)
-    print(l[n])
+# for n in range(length-1, -1, -1): # range(start, stop, step)
+#     print(l[n])
+
+
+
+l = [10, 20, 30, 40, 50]
+
+# If you want to delete something from list, there are multiple ways to do it. You can use the del statement, the remove() method, or the pop() method and clear() method.
+
+del l[2]  # deletes the element at index 2
+
+print("List after deleting element at index 2:", l)  # Output: List after deleting element at index 2: [10, 20, 40, 50]
+
+
+# remove () method removes the first occurrence of a specified value from the list. If the value is not found, it raises a ValueError.
+l = [10, 20, 30, 40, 50]
+
+l.remove(20)
+
+print("List after removing 20:", l)  # Output: List after removing 20: [10, 30, 40, 50]
+
+
+# pop() method removes and returns the element at the specified index. If no index is specified, it removes and returns the last item in the list. If the index is out of range, it raises an IndexError.
+
+l = [10, 20, 30, 40, 50]
+
+removed_number=l.pop(0)
+
+# print("List after popping element at index 0:", l)  # Output: List after popping element at index 0: [20, 30, 40, 50]
+# print("Removed number:", removed_number)  # Output: Removed number: 10
+
+# l.pop()
+# print("List after popping last element:", l)  # Output: List after popping last element: [20, 30, 40]
+
+# l.clear()  # This will remove all elements from the list, making it an empty list.
+# print("List after clearing all elements:", l)  # Output: List after clearing all elements
+
+# l.pop(5)  # This will raise an IndexError because index 101 is out of range for the list.
+
+
+# As lists are mutable, you can change the value of an element in a list by accessing it via its index and assigning a new value to it.
+
+# list_abc = [10, 20, 30, 40, 50]
+
+# list_abc[1] = 25  # Changing the value at index 1 from 20 to 25
+# print("List after changing value at index 1:", list_abc)  # Output: List after changing value at index 1: [10, 25, 30, 40, 50]
+
+# list_abc[5] = 60  # This will raise an IndexError because index 5 is out of range for the list.
+
+
+
+# for adding the data into existing list we have different methods like insert(), append(), extend() and concatenation.
+
+
+l = [10, 20, 30, 40, 50]
+
+# insert() method inserts an element at a specified index in the list. If the index is greater than the length of the list, the element will be added to the end of the list. If the index is negative, it counts from the end of the list.
+l.insert(1, 15)  # inserts 15 at index 1
+print("List after inserting 15 at index 1:", l)  # Output: List
+
+l.insert(9, 90)  # inserts 90 at index 9
+print("List after inserting 90 at index 9:", l)  # Output: List
+
+l.insert(-1, 100)  # inserts 100 at the last index
+print("List after inserting 100 at the last index:", l)  # Output: List
+
+
+# append() method adds an element to the end of the list. It does not take any index as an argument, and it always adds the new element at the end of the list.
+
+l.append(60)  # adds 60 at the end of the list
+print("List after appending 60:", l)  
+
+l2 = [70, 80, 90]
+l.append(l2)  # adds the entire list l2 as a single element at the end of the list l
+print("List after appending l2:", l)  # Output: List after appending
+
+
+# extend() method adds all elements of an iterable (like a list, tuple, or string) to the end of the list. It takes an iterable as an argument and adds each element of that iterable to the list.
+
+l3 = [101, 102, 103]
+string = "Khushal"
+l.extend(l3)  # adds all elements of list l3 to the end of the list l
+print("List after extending with l3:", l)  # Output: List after extending with l3:
+
+l.extend(string)  # adds each character of the string to the end of the list l
+print("List after extending with string:", l)  # Output: List after extending with string
+
+
+
+# concatenation of lists can be done using the + operator. It creates a new list that contains all the elements of the original lists.
+
+la = [1, 2, 3]
+lb = [4, 5, 6]
+
+concatenated_list = la + lb  # concatenates lists la and lb
+print("Concatenated list:", concatenated_list)  # Output: Concatenated list: [1, 2, 3, 4, 5, 6]
+
+
+
+# list functions
+
+# reverse(), min(), max(), count(), index(), sort(), sorted()
+
+# the difference between sort() and sorted() is that sort() method modifies the list in place, while sorted() function returns a new sorted list without modifying the original list.
+
+l = [10, 20, 30, 40, 50]
+
+# l.reverse()  # reverses the list in place
+# print("List after reversing:", l)  # Output: List after reversing: [50,
+
+# min_value = min(l)  # finds the minimum value in the list
+# print("Minimum value in the list:", min_value)  # Output: Minimum value in the
+
+# max_value = max(l)  # finds the maximum value in the list
+# print("Maximum value in the list:", max_value)  # Output: Maximum value in the
+
+# count_of_30 =l.count(30)  # counts the occurrences of 30 in the list
+# print("Count of 30 in the list:", count_of_30)  # Output:
+
+# index_no = l.index(30)  # finds the index of the first occurrence of 30 in the list
+# print("Index of 30 in the list:", index_no)  # Output: Index of 30 in the list:
+
+# l.sort()  # sorts the list in ascending order
+# print("List after sorting:", l)  # Output: List after sorting: [10, 20, 30, 40, 50]
+
+
+
+# how to iterate two lists simulataneously using zip() function. 
+# The zip() function takes two or more iterables (like lists, tuples, or strings) and returns an iterator that generates tuples containing elements from the input 
+# iterables. The iteration stops when the shortest input iterable is exhausted.
+
+
+l1 = [1, 2, 3, 4, 5, 6]
+l2 = [11,12, 13, 14, 15]
+
+len_l1= len(l1)
+len_l2= len(l2)
+
+len = min(len_l1, len_l2)
+
+for num in range(len):
+    num1 = l1[num]
+    num2 = l2[num]
+    is_even1 = num1%2==0
+    if is_even1:
+        print(num1)
+    is_even2 = num2%2==0
+    if is_even2:
+        print(num2)
+    
+for num1, num2 in zip(l1, l2): # any extra elements in the longer list will be ignored, and the iteration will stop when the shorter list is exhausted.
+    if num1%2==0:
+        print(num1)
+    if num2%2==0:
+        print(num2)
+        
+        
+        
+# how to convert muliple strings in list
+
+# split() method splits a string into a list of substrings based on a specified delimiter. By default, it splits the string at whitespace characters (spaces, tabs, and newlines). The method returns a list of the resulting substrings.
+
+
+string1 = "Python is a high-level programming language."
+
+print(string1.split(maxsplit=3))  # Output: ['Python', 'is', 'a', 'high-level', 'programming', 'language.']
+
+
+list_of_strings = []
+for i in range(1, 4):
+    input_str = input("Enter your " + str(i) + "st input:- ")
+    list_of_strings.append(input_str)
+print("List of strings:", list_of_strings)  
